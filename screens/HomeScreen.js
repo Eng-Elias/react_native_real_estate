@@ -25,7 +25,17 @@ const HomeScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const {loading, error, data} = useQuery(
-    GET_PROPERTIES({propertyType: selectedType}),
+    GET_PROPERTIES({
+      propertyType: selectedType,
+      name: searchTerm,
+      description: searchTerm,
+      priceLessThan: Array.isArray(filters?.price)
+        ? 1000 * filters.price[1]
+        : undefined,
+      priceGreaterThan: Array.isArray(filters?.price)
+        ? 1000 * filters.price[2]
+        : undefined,
+    }),
   );
 
   const [properties, setProperties] = useState(data?.getProperties ?? []);
@@ -34,55 +44,11 @@ const HomeScreen = () => {
     setProperties(data?.getProperties ?? []);
   }, [data]);
 
-  const [filtersApplied, setFiltersApplied] = useState(false);
-
-  useEffect(() => {
-    if (
-      filters.type === null &&
-      filters.price === null &&
-      filters.bedroom === null &&
-      filters.washroom === null
-    ) {
-      setFiltersApplied(false);
-    } else {
-      setFiltersApplied(true);
-    }
-
-    if (filtersApplied === false && searchTerm === '') {
-      // If all filters are null, return early
-      return;
-    }
-
-    const filteredBySearchTerm = properties.filter(property => {
-      return property.name.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    const newProperties = filteredBySearchTerm.filter(property => {
-      if (filtersApplied === false) {
-        return property;
-      } else {
-        return (
-          property.houseType === filters.type &&
-          property.price >= 1000 * filters.price[0] &&
-          property.price <= 1000 * filters.price[1] &&
-          property.bedroomCount === filters.bedroom &&
-          property.washroomCount === filters.washroom
-        );
-      }
-    });
-
-    setProperties(newProperties);
-  }, [filters, searchTerm]);
-
   const propertiesTypes = ['House', 'Villa', 'Apartment'];
 
   const handleTypeButton = type => {
     setSelectedType(type);
   };
-
-  if (loading) {
-    return <Text style={{color: 'black'}}>Loading...</Text>;
-  }
 
   if (error) {
     return <Text style={{color: 'black'}}>Error: {error.message}</Text>;
@@ -133,7 +99,7 @@ const HomeScreen = () => {
           onChangeText={text => setSearchTerm(text)}
           placeholder="Search"
           placeholderTextColor={'#3834E7'}
-          style={{flex: 1, height: '100%'}}
+          style={{flex: 1, height: '100%', color: 'gray'}}
         />
         <Feather
           name="search"
@@ -187,24 +153,28 @@ const HomeScreen = () => {
         }}>
         <Slider />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 10,
-            justifyContent: 'space-between',
-            marginRight: 20,
-            alignItems: 'baseline',
-            marginBottom: 8,
-          }}>
-          <Text
+        {loading ? (
+          <Text style={{color: 'black'}}>Loading...</Text>
+        ) : (
+          <View
             style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: 'black',
+              flexDirection: 'row',
+              marginTop: 10,
+              justifyContent: 'space-between',
+              marginRight: 20,
+              alignItems: 'baseline',
+              marginBottom: 8,
             }}>
-            Properties for you
-          </Text>
-        </View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                color: 'black',
+              }}>
+              Properties for you
+            </Text>
+          </View>
+        )}
 
         {properties.map((property, index) => (
           <Properties key={index} property={property} />

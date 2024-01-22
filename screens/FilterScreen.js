@@ -13,23 +13,18 @@ const FilterScreen = () => {
   const [selectedBedroomType, setSelectedBedroomType] = useState(3);
   const [selectedWashroomType, setSelectedWashroomType] = useState(2);
 
-  const [priceValues, setPriceValues] = useState([10, 100]);
-  const [distanceValues, setDistanceValues] = useState([0, 25]);
+  const [priceValues, setPriceValues] = useState([1, 500]);
 
   multiSliderPriceValuesChange = values => {
     setPriceValues(values);
-  };
-  multiSliderDistanceValuesChange = values => {
-    setDistanceValues(values);
   };
 
   const dispatch = useDispatch();
 
   const handleApplyFilter = () => {
     const filters = {
-      type: selectedType,
+      houesType: selectedType,
       price: priceValues,
-      distance: distanceValues,
       bedroom: selectedBedroomType,
       washroom: selectedWashroomType,
     };
@@ -137,10 +132,9 @@ const FilterScreen = () => {
           values={[priceValues[0], priceValues[1]]}
           sliderLength={300}
           onValuesChange={multiSliderPriceValuesChange}
-          min={10}
-          max={300}
+          min={1}
+          max={500}
           step={10}
-          // enableLabel={true}
           style={{
             stepLabel: {backgroundColor: 'transparent', color: 'transparent'},
           }}
@@ -154,7 +148,7 @@ const FilterScreen = () => {
           }}>
           <Text style={{color: 'black'}}>{priceValues[0]}K</Text>
           <Text style={{color: 'black'}}>{priceValues[1]}K</Text>
-          <Text style={{color: 'black'}}>300K</Text>
+          <Text style={{color: 'black'}}>500K</Text>
         </View>
       </View>
 
