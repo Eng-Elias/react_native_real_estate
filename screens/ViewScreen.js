@@ -12,6 +12,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ViewScreen = ({route}) => {
   const property = route.params.property;
+  property.images = JSON.parse(property.images);
   const {width, height} = Dimensions.get('window');
 
   const [room, setRoom] = useState(0);
@@ -27,7 +28,7 @@ const ViewScreen = ({route}) => {
         snapToAlignment="center">
         <View style={{width: width * 2, flexDirection: 'row'}}>
           <ImageBackground
-            source={{uri: property.images[room]}}
+            source={{uri: JSON.parse(property.images)[room]}}
             style={{width: '100%', height}}
           />
         </View>
@@ -54,17 +55,8 @@ const ViewScreen = ({route}) => {
               borderColor: '#5552E9',
               borderWidth: room == 0 ? 4 : 2,
             }}
-            source={{uri: Object.values(property.images)[0]}}
+            source={{uri: JSON.parse(property.images)[0]}}
           />
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              maxWidth: 220,
-              color: 'white',
-            }}>
-            {Object.keys(property.images)[0]}
-          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setRoom(1)}
@@ -81,17 +73,8 @@ const ViewScreen = ({route}) => {
               borderColor: '#5552E9',
               borderWidth: room == 1 ? 4 : 2,
             }}
-            source={{uri: Object.values(property.images)[1]}}
+            source={{uri: JSON.parse(property.images)[1]}}
           />
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              maxWidth: 220,
-              color: 'white',
-            }}>
-            {Object.keys(property.images)[1]}
-          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setRoom(2)}
@@ -104,17 +87,8 @@ const ViewScreen = ({route}) => {
               borderColor: '#5552E9',
               borderWidth: room == 2 ? 4 : 2,
             }}
-            source={{uri: Object.values(property.images)[2]}}
+            source={{uri: JSON.parse(property.images)[2]}}
           />
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              maxWidth: 220,
-              color: 'white',
-            }}>
-            {Object.keys(property.images)[2]}
-          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

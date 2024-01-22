@@ -146,7 +146,7 @@ const DetailScreen = ({route, setWishlist}) => {
             gap: 8,
             flexWrap: 'wrap',
           }}>
-          {property.facilities.map((option, index) => (
+          {JSON.parse(property.facilities).map((option, index) => (
             <React.Fragment key={index}>
               <TouchableOpacity
                 style={{

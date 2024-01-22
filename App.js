@@ -15,7 +15,6 @@ import {useEffect, useState} from 'react';
 import BottomTab from './component/BottomTab';
 import {Provider} from 'react-redux';
 import store from './redux/store';
-import propertiesList from './data/properties';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,8 +36,6 @@ const AppNavigationComponent = ({setActiveScreen}) => {
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState('');
-
-  const [propertiesData, setPropertiesData] = useState(propertiesList);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,9 +64,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Home">
-            {props => <HomeScreen {...props} propertiesData={propertiesData} />}
-          </Stack.Screen>
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Filter" component={FilterScreen} />
           <Stack.Screen name="Detail">
             {props => <DetailScreen {...props} setWishlist={setWishlist} />}

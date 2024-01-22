@@ -13,19 +13,26 @@ import Feather from 'react-native-vector-icons/Feather';
 import Slider from '../component/Slider';
 import Properties from '../component/Properties';
 import {useSelector} from 'react-redux';
+import {useQuery} from '@apollo/client';
+import {GET_PROPERTIES} from '../queries/getProperites';
 
-const HomeScreen = ({propertiesData}) => {
-  const [selectedType, setSelectedType] = useState('House');
+const HomeScreen = () => {
+  const initialPropertyType = 'House';
+  const [selectedType, setSelectedType] = useState(initialPropertyType);
 
   const filters = useSelector(state => state.filters);
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [properties, setProperties] = useState(
-    Array.isArray(propertiesData)
-      ? propertiesData.filter(property => property.propertyType === 'House')
-      : [],
+  const {loading, error, data} = useQuery(
+    GET_PROPERTIES({propertyType: selectedType}),
   );
+
+  const [properties, setProperties] = useState(data?.getProperties ?? []);
+
+  useEffect(() => {
+    setProperties(data?.getProperties ?? []);
+  }, [data]);
 
   const [filtersApplied, setFiltersApplied] = useState(false);
 
@@ -71,11 +78,15 @@ const HomeScreen = ({propertiesData}) => {
 
   const handleTypeButton = type => {
     setSelectedType(type);
-    const data = Object.values(propertiesData ?? {}).filter(
-      property => property.propertyType === type,
-    );
-    setProperties(data);
   };
+
+  if (loading) {
+    return <Text style={{color: 'black'}}>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text style={{color: 'black'}}>Error: {error.message}</Text>;
+  }
 
   return (
     <SafeAreaView>
