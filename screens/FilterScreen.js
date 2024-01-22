@@ -5,15 +5,22 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {updateFilters} from '../redux/actions';
+import store from '../redux/store';
 
 const FilterScreen = () => {
   const navigation = useNavigation();
+  filterState = store.getState().filters;
 
   const [selectedType, setSelectedType] = useState('Family house');
   const [selectedBedroomType, setSelectedBedroomType] = useState(3);
   const [selectedWashroomType, setSelectedWashroomType] = useState(2);
 
-  const [priceValues, setPriceValues] = useState([1, 500]);
+  const minPrice = 1;
+  const maxPrice = 500;
+
+  const [priceValues, setPriceValues] = useState(
+    filterState?.price ?? [minPrice, maxPrice],
+  );
 
   multiSliderPriceValuesChange = values => {
     setPriceValues(values);
@@ -30,7 +37,7 @@ const FilterScreen = () => {
     };
 
     dispatch(updateFilters(filters));
-    navigation.goBack();
+    navigation.navigate('Home');
   };
 
   return (
@@ -132,8 +139,8 @@ const FilterScreen = () => {
           values={[priceValues[0], priceValues[1]]}
           sliderLength={300}
           onValuesChange={multiSliderPriceValuesChange}
-          min={1}
-          max={500}
+          min={minPrice}
+          max={maxPrice}
           step={10}
           style={{
             stepLabel: {backgroundColor: 'transparent', color: 'transparent'},

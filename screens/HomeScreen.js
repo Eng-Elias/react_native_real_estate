@@ -33,7 +33,7 @@ const HomeScreen = () => {
         ? 1000 * filters.price[1]
         : undefined,
       priceGreaterThan: Array.isArray(filters?.price)
-        ? 1000 * filters.price[2]
+        ? 1000 * filters.price[0]
         : undefined,
     }),
   );

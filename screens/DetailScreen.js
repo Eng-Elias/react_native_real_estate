@@ -79,7 +79,7 @@ const DetailScreen = ({route, setWishlist}) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <Image
         style={{width: '100%', height: 240}}
-        source={require('../assets/Screen1.jpeg')}
+        source={{uri: property.mainImage}}
         resizeMode="cover"
       />
 

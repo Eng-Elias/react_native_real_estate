@@ -12,7 +12,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ViewScreen = ({route}) => {
   const property = route.params.property;
-  property.images = JSON.parse(property.images);
   const {width, height} = Dimensions.get('window');
 
   const [room, setRoom] = useState(0);

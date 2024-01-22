@@ -8,7 +8,7 @@ import {name as appName} from './app.json';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'http://192.168.137.1:4000/graphql',
+  uri: 'https://graphql-server-real-estate.onrender.com/graphql',
   cache: new InMemoryCache(),
 });
 
