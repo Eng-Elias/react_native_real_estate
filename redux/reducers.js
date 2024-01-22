@@ -6,7 +6,6 @@ const initialState = {
   filters: {
     type: null,
     price: null,
-    distance: null,
     bedroom: null,
     washroom: null,
   },
